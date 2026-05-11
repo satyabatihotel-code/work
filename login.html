@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dishari Login</title>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#1877F2,#4ea3ff);
+  overflow:hidden;
+}
+
+.main-box{
+  width:360px;
+  background:#fff;
+  padding:35px 28px;
+  border-radius:24px;
+  box-shadow:0 10px 35px rgba(0,0,0,0.2);
+  text-align:center;
+}
+
+.logo{
+  font-size:42px;
+  font-weight:bold;
+  color:#1877F2;
+  margin-bottom:30px;
+  letter-spacing:1px;
+}
+
+.input-box{
+  width:100%;
+  padding:15px;
+  border:none;
+  outline:none;
+  background:#f2f4f7;
+  border-radius:14px;
+  margin-bottom:18px;
+  font-size:16px;
+}
+
+.btn{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  background:#1877F2;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.btn:hover{
+  background:#1668d3;
+}
+
+.bottom-links{
+  margin-top:20px;
+  display:flex;
+  justify-content:space-between;
+}
+
+.bottom-links span{
+  color:#1877F2;
+  font-size:14px;
+  cursor:pointer;
+}
+
+#msg{
+  margin-top:18px;
+  color:#1877F2;
+  font-weight:bold;
+  min-height:20px;
+}
+
+.popup{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+
+.popup-box{
+  width:350px;
+  background:white;
+  padding:30px 25px;
+  border-radius:24px;
+  text-align:center;
+  animation:pop 0.3s ease;
+}
+
+@keyframes pop{
+  from{
+    transform:scale(0.8);
+    opacity:0;
+  }
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+.popup-title{
+  font-size:26px;
+  font-weight:bold;
+  color:#1877F2;
+  margin-bottom:25px;
+}
+
+.label{
+  text-align:left;
+  margin-bottom:8px;
+  font-size:14px;
+  color:#666;
+}
+
+.loading{
+  display:none;
+  margin-top:15px;
+  color:#1877F2;
+  font-weight:bold;
+}
+
+.loader{
+  width:22px;
+  height:22px;
+  border:3px solid #ddd;
+  border-top:3px solid #1877F2;
+  border-radius:50%;
+  margin:10px auto;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  100%{
+    transform:rotate(360deg);
+  }
+}
+
+.login-text{
+  margin-top:18px;
+  color:#1877F2;
+  font-size:14px;
+  cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="main-box">
+
+<div class="logo">Dishari</div>
+
+<input type="text" id="username" class="input-box" placeholder="Enter your name">
+
+<input type="tel" id="phone" class="input-box" placeholder="Enter your Phone no">
+
+<button class="btn" onclick="login()">Sign In</button>
+
+<div id="msg"></div>
+
+<div class="bottom-links">
+<span onclick="openForgotPassword()">Forgot Password?</span>
+<span onclick="openForgotUser()">Forgot User ID?</span>
+</div>
+
+</div>
+
+<!-- SIGNUP POPUP -->
+
+<div class="popup" id="signupPopup">
+
+<div class="popup-box">
+
+<div class="popup-title">
+New User? Create Your Account
+</div>
+
+<div class="label">User ID</div>
+
+<input type="text" id="newUsername" class="input-box" placeholder="Enter your name">
+
+<div class="label">Password</div>
+
+<input type="tel" id="newPhone" class="input-box" placeholder="Enter your Phone no">
+
+<button class="btn" onclick="signup()">
+Sign Up
+</button>
+
+<div class="loading" id="loading">
+
+<div class="loader"></div>
+
+Please wait...
+
+</div>
+
+<div class="login-text" onclick="closePopups()">
+Login
+</div>
+
+</div>
+</div>
+
+<!-- FORGOT PASSWORD -->
+
+<div class="popup" id="forgotPasswordPopup">
+
+<div class="popup-box">
+
+<div class="popup-title">
+Forgot Password
+</div>
+
+<input type="text" id="forgotUsername" class="input-box" placeholder="Enter User ID">
+
+<button class="btn" onclick="findPassword()">
+Find Password
+</button>
+
+<div id="forgotPasswordMsg" style="margin-top:15px;color:#1877F2;font-weight:bold;"></div>
+
+<div class="login-text" onclick="closePopups()">
+Login
+</div>
+
+</div>
+</div>
+
+<!-- FORGOT USER -->
+
+<div class="popup" id="forgotUserPopup">
+
+<div class="popup-box">
+
+<div class="popup-title">
+Forgot User ID
+</div>
+
+<input type="tel" id="forgotPhone" class="input-box" placeholder="Enter Phone no">
+
+<button class="btn" onclick="findUserID()">
+Find User ID
+</button>
+
+<div id="forgotUserMsg" style="margin-top:15px;color:#1877F2;font-weight:bold;"></div>
+
+<div class="login-text" onclick="closePopups()">
+Login
+</div>
+
+</div>
+</div>
+
+<script>
+
+const API_URL = "https://sheetdb.io/api/v1/ik13hzvtwcxf1";
+
+/* LOGIN */
+
+function login(){
+
+let username = document.getElementById("username").value.trim();
+let phone = document.getElementById("phone").value.trim();
+
+if(username === ""){
+document.getElementById("msg").innerText = "Enter your name";
+return;
+}
+
+if(phone === ""){
+document.getElementById("msg").innerText = "Enter Password";
+return;
+}
+
+fetch(API_URL)
+.then(res => res.json())
+.then(users => {
+
+let userMatch = users.find(u => u.username === username);
+let phoneMatch = users.find(u => u.phone === phone);
+
+if(userMatch && userMatch.phone === phone){
+
+localStorage.setItem("user",username);
+
+window.location.href = "home.html";
+
+}
+else if(userMatch){
+
+document.getElementById("msg").innerText = "Wrong Password";
+
+}
+else if(phoneMatch){
+
+document.getElementById("msg").innerText = "Wrong User ID";
+
+}
+else{
+
+document.getElementById("signupPopup").style.display = "flex";
+
+}
+
+});
+
+}
+
+/* SIGNUP */
+
+function signup(){
+
+let username = document.getElementById("newUsername").value.trim();
+let phone = document.getElementById("newPhone").value.trim();
+
+if(username === "" || phone === ""){
+
+alert("Fill all Fields");
+return;
+
+}
+
+if(phone.length !== 10){
+
+alert("10 digit no");
+return;
+
+}
+
+document.getElementById("loading").style.display = "block";
+
+fetch(API_URL,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+data:{
+username:username,
+phone:phone
+}
+})
+})
+
+.then(res => res.json())
+
+.then(data => {
+
+localStorage.setItem("user",username);
+
+window.location.href = "home.html";
+
+});
+
+}
+
+/* FORGOT PASSWORD */
+
+function openForgotPassword(){
+
+document.getElementById("forgotPasswordPopup").style.display = "flex";
+
+}
+
+function findPassword(){
+
+let username = document.getElementById("forgotUsername").value.trim();
+
+fetch(API_URL)
+
+.then(res => res.json())
+
+.then(users => {
+
+let user = users.find(u => u.username === username);
+
+if(user){
+
+document.getElementById("forgotPasswordMsg").innerText =
+"Your Password : " + user.phone;
+
+}
+else{
+
+document.getElementById("forgotPasswordMsg").innerText =
+"User ID not matching";
+
+}
+
+});
+
+}
+
+/* FORGOT USER ID */
+
+function openForgotUser(){
+
+document.getElementById("forgotUserPopup").style.display = "flex";
+
+}
+
+function findUserID(){
+
+let phone = document.getElementById("forgotPhone").value.trim();
+
+fetch(API_URL)
+
+.then(res => res.json())
+
+.then(users => {
+
+let user = users.find(u => u.phone === phone);
+
+if(user){
+
+document.getElementById("forgotUserMsg").innerText =
+"Your User ID : " + user.username;
+
+}
+else{
+
+document.getElementById("forgotUserMsg").innerText =
+"Phone number not matching";
+
+}
+
+});
+
+}
+
+/* CLOSE POPUPS */
+
+function closePopups(){
+
+document.getElementById("forgotPasswordPopup").style.display = "none";
+
+document.getElementById("forgotUserPopup").style.display = "none";
+
+document.getElementById("signupPopup").style.display = "none";
+
+}
+
+</script>
+
+</body>
+</html>
