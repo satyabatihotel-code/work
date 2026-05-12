@@ -1102,27 +1102,88 @@ Out Of Stock
 
 }
 
-let hours = new Date().getHours();
+let productSeed =
+(product['Product ID'] || Math.random().toString())
+.replace(/\D/g,'');
 
-let watchValue = 11;
+if(productSeed == ""){
+productSeed = Math.floor(Math.random()*9999);
+}
 
-if(hours >= 11 && hours < 12){
-watchValue = Math.floor(Math.random()*2)+11;
+let now = new Date();
+
+let day = now.getDate();
+let month = now.getMonth() + 1;
+let year = now.getFullYear();
+
+let dateSeed =
+day + month + year;
+
+let hour = now.getHours();
+
+let trafficMultiplier = 1;
+
+/* 12AM - 6AM */
+
+if(hour >= 0 && hour < 6){
+
+trafficMultiplier = 0.7;
+
 }
-else if(hours >= 12 && hours < 14){
-watchValue = Math.floor(Math.random()*3)+12;
+
+/* 6AM - 10AM */
+
+else if(hour >= 6 && hour < 10){
+
+trafficMultiplier = 1;
+
 }
-else if(hours >= 14 && hours < 17){
-watchValue = Math.floor(Math.random()*4)+14;
+
+/* 10AM - 1PM */
+
+else if(hour >= 10 && hour < 13){
+
+trafficMultiplier = 1.4;
+
 }
-else if(hours >= 17 && hours < 18){
-watchValue = Math.floor(Math.random()*2)+17;
+
+/* 1PM - 5PM */
+
+else if(hour >= 13 && hour < 17){
+
+trafficMultiplier = 1.8;
+
 }
-else if(hours >= 18 && hours < 20){
-watchValue = Math.floor(Math.random()*3)+18;
+
+/* 5PM - 9PM */
+
+else if(hour >= 17 && hour < 21){
+
+trafficMultiplier = 2.4;
+
 }
+
+/* 9PM - 12AM */
+
 else{
-watchValue = Math.floor(Math.random()*3)+20;
+
+trafficMultiplier = 1.5;
+
+}
+
+let baseViews = (
+parseInt(productSeed) *
+dateSeed *
+7
+) % 420;
+
+let viewCount =
+Math.floor(
+102 + (baseViews * trafficMultiplier)
+);
+
+if(viewCount > 999){
+viewCount = 999;
 }
 
 document.getElementById("popupSize").innerText =
